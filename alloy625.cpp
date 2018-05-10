@@ -546,42 +546,24 @@ void generate(int dim, const char* filename)
 			vector<int> origin(dim, 0);
 
 			// Set precipitate radius
-			// int r = std::floor((0.525 + unidist(mtrand)) * rPrecip[0]);
 			int r = rPrecip[0];
 
 			// Set precipitate separation (min=2r, max=Nx-2r)
-			// int d = unidist(mtrand) * 16 + (g1(initGrid, 0) - g0(initGrid, 0))/2;
 			int d = 8 + (g1(initGrid, 0) - g0(initGrid, 0))/2;
 
 			// Set system composition
 			bool withinRange = false;
 			double xCr0;
 			double xNb0;
-			/*
 			while (!withinRange) {
-				xCr0 = 0.43 + unidist(mtrand) * (0.47 - 0.43);
-				xNb0 = 0.05 + unidist(mtrand) * (0.09 - 0.05);
-				withinRange = (std::pow(xCr0 - 0.45, 2.0) + std::pow(xNb0 - 0.07, 2.0) < std::pow(0.02, 2.0));
-			}
-			*/
-			while (!withinRange) {
-				/*
-				// Survey parameters (TKR4p149, TKR4p158)
-				const double theta = 0.8376;
-				const double   phi = 0.0997;
-				const double   psi = 0.4636;
-				const double gamma = 0.8200;
-				const double    dX = 0.025 * gamma;
-				const double    dY = 0.490 * gamma;
-				*/
 				// Focus parameters (TKR4p159)
 				const double theta = 1.1000;
 				const double   phi =-0.4000;
 				const double   psi = 0.7000;
 				const double    dX = 0.0075;
 				const double    dY = 0.4750;
-				const double X = 0.0100 + 0.05 * unidist(mtrand);
-				const double Y = 0.0275 + 0.05 * unidist(mtrand);
+				const double X = 0.035;
+				const double Y = 0.0525;
 				xNb0 =  (std::cos(theta) + std::tan(psi)) * X + (std::sin(theta) + std::tan(phi)) * Y + dX;
 				xCr0 = -(std::sin(theta) + std::tan(psi)) * X + (std::cos(theta) + std::tan(phi)) * Y + dY;
 				bool belowUpperBound = (xCr0 < (0.349 - 0.490)/(0.250 - 0.025) * (xNb0 - 0.025) + 0.49);

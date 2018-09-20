@@ -2,8 +2,6 @@
 
 > Phase field model for precipitate aging in ternary analogues to Ni-based superalloys
 
-
-
 ## Table of Contents
 
 - [Background](#background)
@@ -13,35 +11,27 @@
 - [References](#references)
 - [License](#license)
 
-
-
 ## Background
 
-This repository contains a phase-field model for solid-state transformations in
-Inconel 625 based on [Zhou *et al.*](#zhou-2014), which is a ternary generalization
-of the binary [KKS model](#kim-1999).
+This repository contains a phase-field model for solid-state transformations in Inconel 625 based on
+[Zhou *et al.*](#zhou-2014), which is a ternary generalization of the binary [KKS model](#kim-1999).
 
-To capture δ, μ, and Laves precipitates in a γ matrix, I have
-chosen Ni–30%Cr–2%Nb as the model system. The interdendritic regions in
-additive manufacturing get enriched to Ni–31%Cr–13%Nb.
-The four-phase three-component model is represented using two composition fields
-(Cr and Nb) and three phase fields (δ, μ, and Laves). There is one
-dependent composition (Ni) and one dependent phase (γ).
+To capture δ, μ, and Laves precipitates in a γ matrix, I have chosen Ni–30%Cr–2%Nb as the model
+system. The interdendritic regions in additive manufacturing get enriched to Ni–31%Cr–13%Nb.  The
+four-phase three-component model is represented using two composition fields (Cr and Nb) and three
+phase fields (δ, μ, and Laves). There is one dependent composition (Ni) and one dependent phase (γ).
 
-Free energies for each constituent phase are computed using a CALPHAD database,
-simplified from [Du *et al.*](#du-2005) to enable one-to-one mapping of sublattice
-compositions to system compositions. This database is provided in
-[Du_Cr-Nb-Ni_simple.tdb](Du_Cr-Nb-Ni_simple.tdb). The CALPHAD expressions are
-further simplified using 2<sup>nd</sup>-order Taylor series (paraboloid)
+Free energies for each constituent phase are computed using a CALPHAD database, simplified from [Du
+*et al.*](#du-2005) to enable one-to-one mapping of sublattice compositions to system
+compositions. This database is provided in [Du_Cr-Nb-Ni_simple.tdb](Du_Cr-Nb-Ni_simple.tdb). The
+CALPHAD expressions are further simplified using 2<sup>nd</sup>-order Taylor series (paraboloid)
 approximations.
-
-
 
 ## Install
 
-This repository contains Python code to handle the CALPHAD database and C++
-code to perform the phase-field simulation. A Python 3 interpreter and C++11
-compiler are recommended. You will need to satisfy the following dependencies:
+This repository contains Python code to handle the CALPHAD database and C++ code to perform the
+phase-field simulation. A Python 3 interpreter and C++11 compiler are recommended. You will need to
+satisfy the following dependencies:
 
 - Python
   - [PyCALPHAD](http://pycalphad.readthedocs.io/en/latest/)
@@ -50,50 +40,42 @@ compiler are recommended. You will need to satisfy the following dependencies:
 - C++
   - [MMSP](https://github.com/mesoscale/mmsp)
   
-After downloading MMSP, the core dependency of this model implementation,
-please set the environmental variable ```MMSP_PATH``` to its location. If
-you are using ```bash```, do something similar to
+After downloading MMSP, the core dependency of this model implementation, please set the
+environmental variable ```MMSP_PATH``` to its location. If you are using ```bash```, do something
+similar to
 
 ```
   echo "MMSP_PATH=~/Downloads/mmsp" >> ~/.bashrc
   . ~/.bashrc
 ```
 
-You will also want to build the MMSP utilities,
-as described in the MMSP documentation.
-
-
+You will also want to build the MMSP utilities, as described in the MMSP documentation.
 
 ## Usage
 
-1. ```python CALPHAD_energies.py```
-   This will use pycalphad to read the database and extract expressions,
-   which are then manipulated and written into C-code by SymPy.
-2. ```make``` (OpenMP, Intel compiler).
-   This will compile the source code into a binary, ```alloy625```.
-   - or ```make serial``` (serial, GNU compiler).
-     This will compile the source code into a binary, ```serial```.
-   - or ```make parallel``` (MPI, GNU compiler).
-     This will compile the source code into a binary, ```parallel```.
-3. Run the code. Since your executable is built against ```MMSP.main.hpp```,
-   the options of that program apply to your binary. For usage suggestions,
-   run ```./alloy625 --help``` or ```./serial --help``` or
-   ```mpirun -np 1 parallel --help```, depending on which executable you built.
-   A typical MMSP run comprises two steps: initialization and update loops.
-   So you would normally do:
+1. ```python CALPHAD_energies.py``` This will use pycalphad to read the database and extract
+   expressions, which are then manipulated and written into C-code by SymPy.
+2. ```make``` (OpenMP, Intel compiler).  This will compile the source code into a binary,
+   ```alloy625```.
+   - or ```make serial``` (serial, GNU compiler).  This will compile the source code into a binary,
+     ```serial```.
+   - or ```make parallel``` (MPI, GNU compiler).  This will compile the source code into a binary,
+     ```parallel```.
+3. Run the code. Since your executable is built against ```MMSP.main.hpp```, the options of that
+   program apply to your binary. For usage suggestions, run ```./alloy625 --help``` or ```./serial
+   --help``` or ```mpirun -np 1 parallel --help```, depending on which executable you built.  A
+   typical MMSP run comprises two steps: initialization and update loops.  So you would normally do:
    - ```./alloy625 --example 2 data.dat```
    - ```./alloy625 data.dat 10000000 1000000```
    - ```mmsp2pvd data.dat data.*.dat``` to generate VTK visualization files,
      then use a VTK viewer such as ParaView or Mayavi to see the results.
 4. Remix, run, and analyze your own variants.
 
-
-
 ## Contribute
 
-Pull requests are welcome! Comments are also appreciated via [issues](https://github.com/usnistgov/phasefield-precipitate-aging/issues) and [e-mail](mailto:trevor.keller@nist.gov).
-
-
+Pull requests are welcome! Comments are also appreciated via
+[issues](https://github.com/usnistgov/phasefield-precipitate-aging/issues) and
+[e-mail](mailto:trevor.keller@nist.gov).
 
 ## References
 
@@ -139,20 +121,16 @@ Pull requests are welcome! Comments are also appreciated via [issues](https://gi
   *Acta Mater.* **65** (2014) 270–286.
   DOI: [10.1016/j.actamat.2013.10.069](http://dx.doi.org/10.1016/j.actamat.2013.10.069)
 
-
-
 ## License
 
-As a work of the United States Government, this software is in the public domain within the United States.
-
-
+As a work of the United States Government, this software is in the public domain within the United
+States.
 
 ### Derivative Works
 
-The source files (```.py```, ```.hpp```, and ```.cpp```) in this repository were
-written by an employee of the United States federal government in the course of
-their employment, and are therefore not subject to copyright. They are public
-domain. However, the Mesoscale Microstructure Simulation Project (MMSP) is subject
-to the General Public License v3.0, and this software ```#include```s major
-aspects of that work. Therefore, if you are not an employee of the US government,
-your derivative works will likely be subject to the terms and conditions of the GPL.
+The source files (```.py```, ```.hpp```, and ```.cpp```) in this repository were written by an
+employee of the United States federal government in the course of their employment, and are
+therefore not subject to copyright. They are public domain. However, the Mesoscale Microstructure
+Simulation Project (MMSP) is subject to the General Public License v3.0, and this software
+```#include```s major aspects of that work. Therefore, if you are not an employee of the US
+government, your derivative works will likely be subject to the terms and conditions of the GPL.
